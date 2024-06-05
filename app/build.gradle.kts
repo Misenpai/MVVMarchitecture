@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    id("org.jetbrains.kotlin.kapt") // Add this line to apply the kapt plugin
+    id("org.jetbrains.kotlin.kapt")
 }
 
 

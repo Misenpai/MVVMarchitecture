@@ -6,12 +6,16 @@ import com.example.mvvmarchitecture.data.repository.UserRepository
 import com.example.mvvmarchitecture.utils.Coroutines
 import com.example.mvvmarchitecture.utils.Exceptions
 
-class AuthViewModel:ViewModel() {
+class AuthViewModel(
+    private val repository: UserRepository
+):ViewModel() {
 
     var email:String? = null
     var password:String?=null
 
     var authListener: AuthListener?=null
+
+    fun getLoggedInUser() = repository.getUser()
 
     fun onLoginButtonClicked(view: View){
         authListener?.onStarted()
@@ -21,9 +25,10 @@ class AuthViewModel:ViewModel() {
         }
         Coroutines.main {
             try{
-                val authResponse = UserRepository().userLogin(email!!,password!!)
+                val authResponse = repository.userLogin(email!!,password!!)
                 authResponse.user?.let {
                     authListener?.onSuccess(it)
+                    repository.saveUser(it)
                     return@main
                 }
 
